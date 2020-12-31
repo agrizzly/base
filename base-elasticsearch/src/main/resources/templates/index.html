@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/js/vue.min.js}"></script>
+    <script th:src="@{/js/axios.min.js}"></script>
+</head>
+<body>
+    <div id="app">
+        <img src="img/0.jpg" />
+        <div>
+            <input v-model="saveword"/>
+            <button @click="save">保存</button>
+        </div>
+        <div>
+            <input v-model="keyword"/>
+            <button @click="search">搜索</button>
+        </div>
+        <div>
+            <p v-for="result in results">
+                <span>{{result.title}}</span>
+            </p>
+        </div>
+    </div>
+<script>
+    new Vue({
+        el:"#app",
+        data(){
+            return{
+                saveword: '',
+                keyword:'',
+                results: []
+            }
+        },
+        methods:{
+            save(){
+                let saveword = this.saveword;
+                console.log(saveword)
+                axios.get('/save/' + saveword)
+                    .then((res) => {
+                        console.log(res)
+                    }).catch(err => {
+                    console.log(err)
+                })
+            },
+            search(){
+                let keyword = this.keyword;
+                console.log(keyword)
+                axios.get('/show/' + keyword)
+                    .then((res) => {
+                        console.log(res)
+                        this.results = res.data;
+                    }).catch(err => {
+                    console.log(err)
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

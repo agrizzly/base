@@ -1,0 +1,16 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true
+    username: root
+    password: 123456
+  redis:
+    # 哨兵模式
+    sentinel:
+      master: mymaster
+      # 哨兵节点
+      nodes: 192.168.100.10:26379
+    database: 2
+

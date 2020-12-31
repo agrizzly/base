@@ -1,0 +1,33 @@
+# 多数据源
+server:
+  port: 8086
+spring:
+  datasource:
+    # dynamic-datasource-spring-boot-starter 动态数据源的配置内容
+    dynamic:
+      primary: master # 设置默认的数据源或者数据源组，默认值即为 master
+      datasource:
+        # 主库数据源配置
+        master:
+          url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2b8
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          username: root
+          password: 123456
+        # 从库数据源配置
+        slave_1:
+          url: jdbc:mysql://127.0.0.1:3306/test1?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2b8
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          username: root
+          password: 123456
+        # 从库数据源配置
+        slave_2:
+          url: jdbc:mysql://127.0.0.1:3306/test2?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2b8
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          username: root
+          password: 123456
+
+mybatis-plus:
+#  config-location: classpath:mybatis-config.xml # 配置 MyBatis 配置文件路径
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

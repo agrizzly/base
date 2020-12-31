@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+<div id="app" style="text-align: center;margin-left:35%;margin-top: 200px;width: 500px">
+    <el-upload
+            class="upload-demo"
+            drag
+            action="/fileupload"
+            name="file"
+
+            :before-upload="beforeUpload"
+            :on-success="uploadSuccess"
+            :on-error="uploadError"
+            :on-remove="remove"
+            :file-list="filelist">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">支持pdf，doc, docx ，xls，zip，xlsx，zip，rar，mp4上传，文件大小不超过50MB</div>
+    </el-upload>
+    <div v-text="msg"></div>
+    <el-input id="input" v-model="input" placeholder="" style="padding-top: 200px" readonly="readonly"></el-input>
+    <el-button type="primary" @click="copy()" style="margin-top: 20px">复制</el-button>
+</div>
+
+
+</body>
+<!-- import Vue before Element -->
+<script src="/js/vue.js"></script>
+<!-- import JavaScript -->
+<script src="/js/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            msg: "",
+            input: " "
+        },
+        methods: {
+            beforeUpload: function (file) {
+                var suffixName = file.name.substring(file.name.lastIndexOf("."));
+                var filemaxsize = 1024 * 50;
+                var filesize = file.size / 1024;
+                var filetypes = [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".zip", ".rar", ".mp4"];
+                if (filetypes.indexOf(suffixName) == -1) {
+                    alert("不支持的文件类型")
+                    return false;
+                }
+                if (filesize > filemaxsize) {
+                    alert("文件大小不能大于50MB")
+                    return false;
+                }
+                return true;
+            }
+            ,
+            uploadSuccess: function (response, file, fileList) {
+
+                fileList.splice(0, 1)
+                this.$message({
+                    message: '上传成功',
+                    type: 'success'
+                });
+                this.input = response.data.url;
+            }
+            ,
+            uploadError: function (err, file, fileList) {
+                alert("上传失败");
+            }
+            ,
+            remove: function (file) {
+
+            },
+            copy() {
+                document.getElementById("input").select();
+                document.execCommand("Copy"); // 执行浏览器复制命令
+                this.$message({
+                    message: '复制成功',
+                    type: 'success'
+                });
+            }
+        }
+    })
+</script>
+</html>

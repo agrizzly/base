@@ -1,0 +1,13 @@
+server:
+  port: 8086
+  tomcat:
+    max-swallow-size: -1
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+  thymeleaf:
+    cache: false
+uploadHost: http://47.102.221.216
